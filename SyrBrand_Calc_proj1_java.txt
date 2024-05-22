@@ -1,0 +1,128 @@
+// Тестовое задание @SyrBrandon
+// Версия 1
+
+import java.io.IOException; 
+import java.util.Scanner; 
+ 
+public class Main { 
+ 
+ static Scanner s=new Scanner(System.in); 
+ 
+ public static String calc(String input) throws IOException { 
+ 
+ String[] result=input.split("\\+|\\*|\\/|\\-"); // Определяем кол-во чисел в выражении 
+ //System.out.println(result.length); 
+ if (result.length > 2){ 
+ throw new IOException("формат мат операции не соотвествует заданию. Должно быть два числа!"); 
+ } 
+ String[] words=input.split(" "); // Определяем числа и знак 
+ // for(String word:words){ 
+ // System.out.println(word); 
+ //} 
+ if (words.length <=1){ 
+ throw new IOException("формат мат операции не соотвествует заданию. Пример: 1 + 1 (нужен пробел)"); 
+ } 
+ // System.out.println(words[0]); 
+ // System.out.println(words[1]); 
+ // System.out.println(words[2]); 
+ String numStr1=words[0]; // первое число 
+ String numStr2=words[2]; // знак операции 
+ String znak=words[1]; // второе число 
+ boolean rIM1=false; 
+ boolean rIM2=false; 
+ int numInt1; 
+ try { 
+ numInt1 = Integer.parseInt(numStr1); 
+ } catch (NumberFormatException e) { 
+ rIM1 =true; 
+ numInt1 = switch (numStr1) { 
+ case "I" ->1; 
+ case "II" ->2; 
+ case "III" ->3; 
+ case "IV" ->4; 
+ case "V" ->5; 
+ case "VI" ->6; 
+ case "VII" ->7; 
+ case "VIII" ->8; 
+ case "IX" ->9; 
+ case "X" ->10; 
+ default -> throw new IOException("формат мат операции не соотвествует заданию. Число 1 должно быть от I до X"); 
+ }; 
+ } 
+ int numInt2; 
+ try { 
+ numInt2 = Integer.parseInt(numStr2); 
+ // int numInt2 = Integer.parseInt(numStr2); 
+ } catch (NumberFormatException e) { 
+ rIM2=true; 
+ numInt2 = switch (numStr2) { 
+ case "I" ->1; 
+ case "II" ->2; 
+ case "III" ->3; 
+ case "IV" ->4; 
+ case "V" ->5; 
+ case "VI" ->6; 
+ case "VII" ->7; 
+ case "VIII" ->8; 
+ case "IX" ->9; 
+ case "X" ->10; 
+ default -> throw new IOException("формат мат операции не соотвествует заданию. Число 2 Должно быть от I до X"); 
+ }; 
+ } 
+ 
+ if (((rIM1==true)&&(rIM2==false))||((rIM1==false)&&(rIM2==true))) { 
+ throw new IOException("формат мат операции не соотвествует заданию. Смешанный ввод араб + римск"); 
+ } 
+ if ((numInt1<1 || numInt1>10 ) || (numInt2<1 || numInt2>10 )){ 
+ throw new IOException("формат мат операции не соотвествует заданию. Числа от 1 до 10"); 
+ } 
+ 
+ Integer otvet=null; 
+ 
+ if (znak.equals("+")) { 
+ otvet = numInt1 + numInt2; 
+ } 
+ 
+ if (znak.equals("-")) { 
+ otvet = numInt1 - numInt2; 
+ } 
+ 
+ if (znak.equals("*")) { 
+ otvet = numInt1 * numInt2; 
+ } 
+ 
+ if (znak.equals("/")) { 
+ otvet = numInt1 / numInt2; 
+ } 
+ 
+ if (otvet==null) { 
+ throw new IOException("формат мат операции не соотвествует заданию. Не допустимый знак мат операции"); 
+ } 
+ // System.out.println("Ответ: " +otvet); 
+ if (((rIM1==true)&&(rIM2==true))&&(otvet<1)) { 
+ throw new IOException("формат мат операции не соотвествует заданию. Результат с римск только положит (не меньше 1)"); 
+ } 
+ String[] rIMSymbols = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"}; 
+ int[] arabicNum = {1000, 900, 500,400,100,90,50,40,10,9,5,4,1}; 
+ 
+ int temp; 
+ temp=otvet; // буфер 
+ StringBuilder rIMstr = new StringBuilder(); 
+ for (int i=0; i < arabicNum.length; i++){ 
+ while (temp >= arabicNum[i]){ 
+ rIMstr.append(rIMSymbols[i]); 
+ temp -=arabicNum[i]; 
+ } 
+ } 
+ if (((rIM1==true)&&(rIM2==true))) { 
+ return rIMstr.toString(); 
+ } 
+ return otvet.toString(); 
+ } 
+ 
+ public static void main(String[] args) throws IOException { 
+ System.out.println(calc(s.nextLine())); 
+ } 
+}
+
+
